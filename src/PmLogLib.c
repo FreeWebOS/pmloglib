@@ -59,7 +59,11 @@ static PmLogContext libProcessContext = kPmLogGlobalContext;
  ***********************************************************************/
 pid_t gettid(void)
 {
+#ifndef __FreeBSD__
 	return (pid_t) syscall(__NR_gettid);
+#else
+	return (pid_t) syscall(SYS_getpid);
+#endif
 }
 
 

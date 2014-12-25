@@ -3,7 +3,7 @@ PmLogLib
 
 Summary
 -------
-The Open webOS logging library
+The Free webOS logging library
 
 
 Dependencies
@@ -12,7 +12,7 @@ Dependencies
 Below are the tools (and their minimum versions) required to build _PmLogLib_:
 
 - cmake (version required by openwebos/cmake-modules-webos)
-- gcc 4.6.3
+- gcc 4.6.3 or clang
 - glib-2.0 2.32.4
 - freewebos/libpbnjson 1.3.0
 - make (any version)
@@ -94,6 +94,9 @@ the tree defined by the value of `WEBOS_INSTALL_ROOT` (or its default).
 
 You will need to use `sudo` if you did not specify `WEBOS_INSTALL_ROOT`.
 
+# TODO
++ CMake generates some linuxisms: -ldl and -lpthread in link line
++ glibconfig.h not found
 
 # Copyright and License Information
 
