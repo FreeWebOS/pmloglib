@@ -2176,7 +2176,7 @@ static bool validate_json_string(const char* kvpairs, PmLogErr *logErr, const bo
 #ifndef WEBOS_MASS_PRODUCTION
 	JSchemaInfo  schemaInfo;
 
-	char *ptr_kvpairs = kvpairs;
+	const char *ptr_kvpairs = kvpairs;
 	char json_str[BUFFER_LEN] = {0, };
 	int next_brace_pos = 0;
 	int previous_pos = 0;
@@ -2242,7 +2242,7 @@ PmLogErr PmLogString_(PmLogContext context, PmLogLevel level,
 	char            lineStr[BUFFER_LEN] = {0,};
 	int             ret;
 	char            ptidStr[PIDSTR_LEN];
-	char            *ptr_msgid = msgid;
+	const char     *ptr_msgid = msgid;
 
 	contextP = PrvResolveContext(context);
 	if (!contextP) {
@@ -2325,7 +2325,7 @@ PmLogErr PmLogString_(PmLogContext context, PmLogLevel level,
 
 	if (kPmLogErr_EmptyMsgID == logErr) {
 		char buffer[128] = {0,};
-		snprintf(buffer, sizeof(buffer), lineStr);
+		snprintf(buffer, sizeof(buffer), "%s", lineStr);
 		gchar *escaped_str = g_strescape(buffer, "");
 		ErrPrint(contextP->component, ptidStr,
 		         "EMPTY_MSGID {\"MESSAGE\":\"%s ...\"} MSGID must not be empty",
@@ -2498,7 +2498,7 @@ PmLogErr _PmLogMsgKV(PmLogContext context, PmLogLevel level, unsigned int flags,
 	char           final_str[BUFFER_LEN] = {0, };
 	char           *ptr_final_str = final_str;
 	const char*    empty_kv_pair_str = "{} ";
-	char           *ptr_msgid = msgid;
+	const char    *ptr_msgid = msgid;
 	char           ptidStr[ PIDSTR_LEN ];
 	int            empty_kv_pair_size = 0;
 
@@ -2858,6 +2858,9 @@ const char* PmLogGetErrDbgString(PmLogErr logErr)
 		/*  15 */ DEFINE_ERR_STR( InvalidMsgID );
 		//---------------------------------------------
 		/* 999 */ DEFINE_ERR_STR( Unknown );
+		default:
+			/* Do nothing */
+		break;
 	}
 
 	#undef DEFINE_ERR_STR
