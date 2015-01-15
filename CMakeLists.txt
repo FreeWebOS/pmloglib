@@ -89,14 +89,25 @@ if(PARSE_DEFAULT_ONLY)
 endif()
 
 webos_add_linker_options(ALL --version-script=${CMAKE_SOURCE_DIR}/src/PmLogLibExports.map)
-webos_add_linker_options(ALL --no-undefined)
 
 add_library(PmLogLib SHARED src/PmLogLib.c)
 
-if(PARSE_DEFAULT_ONLY)
-	target_link_libraries(PmLogLib ${GLIB2_LDFLAGS} ${PBNJSON_C_LDFLAGS} ${NYXLIB_LDFLAGS} dl pthread)
-else()
-	target_link_libraries(PmLogLib ${GLIB2_LDFLAGS} ${PBNJSON_C_LDFLAGS} dl pthread)
+### Targeet specific settings
+if(${CMAKE_SYSTEM_NAME} MATCHES "FreeBSD")
+	# FreeBSD does not have explicit dl library
+	if(PARSE_DEFAULT_ONLY)
+		target_link_libraries(PmLogLib ${GLIB2_LDFLAGS} ${PBNJSON_C_LDFLAGS} ${NYXLIB_LDFLAGS} pthread)
+	else()
+		target_link_libraries(PmLogLib ${GLIB2_LDFLAGS} ${PBNJSON_C_LDFLAGS} pthread)
+	endif()
+	# XXX lack of --no-undefined linker option might be harmful?
+else() #Linux
+	webos_add_linker_options(ALL --no-undefined)
+	if(PARSE_DEFAULT_ONLY)
+		target_link_libraries(PmLogLib ${GLIB2_LDFLAGS} ${PBNJSON_C_LDFLAGS} ${NYXLIB_LDFLAGS} dl pthread)
+	else()
+		target_link_libraries(PmLogLib ${GLIB2_LDFLAGS} ${PBNJSON_C_LDFLAGS} dl pthread)
+	endif()
 endif()
 
 webos_build_library(NOHEADERS)
