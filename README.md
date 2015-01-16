@@ -28,6 +28,8 @@ How to Build on Unix
 
 ## Building
 
+### Simple way
+
 Once you have downloaded the source, enter the following to build it (after
 changing into the directory under which it was downloaded):
 
@@ -36,6 +38,29 @@ changing into the directory under which it was downloaded):
     $ cmake ..
     $ make
     $ sudo make install
+
+### Installing headers and the library separately
+
+First install headers only:
+
+    $ mkdir BUILD
+    $ cd BUILD
+    $ cmake -D SHIP_HEADERS_ONLY=ON ..
+    $ make
+    $ sudo make install
+
+After this disable shipping headers to avoid re-installing:
+
+    $ mkdir BUILD
+    $ cd BUILD
+    $ cmake -D BUILD_WITHOUT_HEADERS=ON ..
+    $ make
+    $ sudo make install
+
+This allows to install some other components that depend on the headers between
+those builds.
+
+### Changing install directory
 
 The directory under which the files are installed defaults to `/usr/local/webos`.
 You can install them elsewhere by supplying a value for `WEBOS_INSTALL_ROOT`
@@ -93,10 +118,6 @@ The documentation will be installed to `usr/share/doc/PmLogLib/html` under
 the tree defined by the value of `WEBOS_INSTALL_ROOT` (or its default).
 
 You will need to use `sudo` if you did not specify `WEBOS_INSTALL_ROOT`.
-
-# TODO
-+ CMake generates some linuxisms: -ldl and -lpthread in link line
-+ glibconfig.h not found
 
 # Copyright and License Information
 
